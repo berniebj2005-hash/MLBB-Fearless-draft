@@ -343,8 +343,10 @@
     width:100%; aspect-ratio:1; border-radius:8px;
     display:flex; align-items:center; justify-content:center;
     font-family:'Teko',sans-serif; font-weight:600; font-size:19px; letter-spacing:0.02em;
-    color:#111a15; flex-shrink:0;
+    color:#111a15; background:transparent !important; flex-shrink:0; position:relative; overflow:hidden;
   }
+  .hero-avatar .avatar-initials{ position:absolute; }
+  .hero-avatar img{ display:block; width:100%; height:100%; object-fit:cover; border-radius:inherit; position:relative; z-index:1; }
   .hero-name{ line-height:1.15; font-size:9.5px; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%; }
 
   /* ---------- Result / footer controls ---------- */
@@ -425,6 +427,142 @@
     "Valir","Vexana","Wanwan","X.Borg","Xavier","Yi Sun-shin","Yin","Yu Zhong","Yve","Zetian",
     "Zhask","Zhuxin","Zilong"
   ];
+
+  var HERO_IMAGES = {
+    "Aamon": "hero-icons assets/aamon-icon.webp",
+    "Akai": "hero-icons assets/akai-icon.webp",
+    "Aldous": "hero-icons assets/aldous-icon.webp",
+    "Alice": "hero-icons assets/alice-icon.webp",
+    "Alpha": "hero-icons assets/alpha-icon.webp",
+    "Alucard": "hero-icons assets/alucard-icon.webp",
+    "Angela": "hero-icons assets/angela-icon.webp",
+    "Argus": "hero-icons assets/argus-icon.webp",
+    "Arlott": "hero-icons assets/arlott-icon.webp",
+    "Atlas": "hero-icons assets/atlas-icon.webp",
+    "Aulus": "hero-icons assets/aulus-icon.webp",
+    "Aurora": "hero-icons assets/aurora-icon.webp",
+    "Badang": "hero-icons assets/badang-icon.webp",
+    "Balmond": "hero-icons assets/balmond-icon.webp",
+    "Bane": "hero-icons assets/bane-icon.webp",
+    "Barats": "hero-icons assets/barats-icon.webp",
+    "Baxia": "hero-icons assets/baxia-icon.webp",
+    "Beatrix": "hero-icons assets/beatrix-icon.webp",
+    "Belerick": "hero-icons assets/belerick-icon.webp",
+    "Benedetta": "hero-icons assets/benedetta-icon.webp",
+    "Brody": "hero-icons assets/brody-icon.webp",
+    "Bruno": "hero-icons assets/bruno-icon.webp",
+    "Carmilla": "hero-icons assets/carmilla-icon.webp",
+    "Cecilion": "hero-icons assets/cecilion-icon.webp",
+    "Chang'e": "hero-icons assets/chang'e-icon.webp",
+    "Chip": "hero-icons assets/chip-icon.webp",
+    "Chou": "hero-icons assets/chou-icon.webp",
+    "Cici": "hero-icons assets/cici-icon.webp",
+    "Claude": "hero-icons assets/claude-icon.webp",
+    "Clint": "hero-icons assets/clint-icon.webp",
+    "Cyclops": "hero-icons assets/cyclops-icon.webp",
+    "Diggie": "hero-icons assets/diggie-icon.webp",
+    "Dyrroth": "hero-icons assets/dyrroth-icon.webp",
+    "Edith": "hero-icons assets/edith-icon.webp",
+    "Esmeralda": "hero-icons assets/esmeralda-icon.webp",
+    "Estes": "hero-icons assets/estes-icon.webp",
+    "Eudora": "hero-icons assets/eudora-icon.webp",
+    "Fanny": "hero-icons assets/fanny-icon.webp",
+    "Faramis": "hero-icons assets/faramis-icon.webp",
+    "Floryn": "hero-icons assets/floryn-icon.webp",
+    "Franco": "hero-icons assets/franco-icon.webp",
+    "Fredrinn": "hero-icons assets/fredrinn-icon.webp",
+    "Freya": "hero-icons assets/freya-icon.webp",
+    "Gatotkaca": "hero-icons assets/gatotkaca-icon.webp",
+    "Gloo": "hero-icons assets/gloo-icon.webp",
+    "Gord": "hero-icons assets/gord-icon.webp",
+    "Granger": "hero-icons assets/granger-icon.webp",
+    "Grock": "hero-icons assets/grock-icon.webp",
+    "Guinevere": "hero-icons assets/guinevere-icon.webp",
+    "Gusion": "hero-icons assets/gusion-icon.webp",
+    "Hanabi": "hero-icons assets/hanabi-icon.webp",
+    "Hanzo": "hero-icons assets/hanzo-icon.webp",
+    "Harith": "hero-icons assets/harith-icon.webp",
+    "Harley": "hero-icons assets/harley-icon.webp",
+    "Hayabusa": "hero-icons assets/hayabusa-icon.webp",
+    "Helcurt": "hero-icons assets/helcurt-icon.webp",
+    "Hilda": "hero-icons assets/hilda-icon.webp",
+    "Hirara": "hero-icons assets/hirara-icon.webp",
+    "Hylos": "hero-icons assets/hylos-icon.webp",
+    "Irithel": "hero-icons assets/irithel-icon.webp",
+    "Ixia": "hero-icons assets/ixia-icon.webp",
+    "Jawhead": "hero-icons assets/jawhead-icon.webp",
+    "Johnson": "hero-icons assets/johnson-icon.webp",
+    "Joy": "hero-icons assets/joy-icon.webp",
+    "Julian": "hero-icons assets/julian-icon.webp",
+    "Kadita": "hero-icons assets/kadita-icon.webp",
+    "Kagura": "hero-icons assets/kagura-icon.webp",
+    "Kaja": "hero-icons assets/kaja-icon.webp",
+    "Kalea": "hero-icons assets/kalea-icon.webp",
+    "Karina": "hero-icons assets/karina-icon.webp",
+    "Karrie": "hero-icons assets/karrie-icon.webp",
+    "Khaleed": "hero-icons assets/khaleed-icon.webp",
+    "Khufra": "hero-icons assets/khufra-icon.webp",
+    "Kimmy": "hero-icons assets/kimmy-icon.webp",
+    "Lancelot": "hero-icons assets/lancelot-icon.webp",
+    "Lapu-Lapu": "hero-icons assets/lapu-lapu-icon.webp",
+    "Layla": "hero-icons assets/layla-icon.webp",
+    "Leomord": "hero-icons assets/leomord-icon.webp",
+    "Lesley": "hero-icons assets/lesley-icon.webp",
+    "Ling": "hero-icons assets/ling-icon.webp",
+    "Lolita": "hero-icons assets/lolita-icon.webp",
+    "Lukas": "hero-icons assets/lukas-icon.webp",
+    "Lunox": "hero-icons assets/lunox-icon.webp",
+    "Luo Yi": "hero-icons assets/luo-yi-icon.webp",
+    "Lylia": "hero-icons assets/lylia-icon.webp",
+    "Marcel": "hero-icons assets/marcel-icon.webp",
+    "Martis": "hero-icons assets/martis-icon.webp",
+    "Masha": "hero-icons assets/masha-icon.webp",
+    "Mathilda": "hero-icons assets/mathilda-icon.webp",
+    "Melissa": "hero-icons assets/melissa-icon.webp",
+    "Minotaur": "hero-icons assets/minotaur-icon.webp",
+    "Minsitthar": "hero-icons assets/minsitthar-icon.webp",
+    "Miya": "hero-icons assets/myia-icon.webp",
+    "Moskov": "hero-icons assets/moscov-icon.webp",
+    "Nana": "hero-icons assets/nana-icon.webp",
+    "Natalia": "hero-icons assets/natalia-icon.webp",
+    "Natan": "hero-icons assets/natan-icon.webp",
+    "Nolan": "hero-icons assets/nolan-icon.webp",
+    "Novaria": "hero-icons assets/novaria-icon.webp",
+    "Obsidia": "hero-icons assets/obsidia-icon.webp",
+    "Odette": "hero-icons assets/odette-icon.webp",
+    "Paquito": "hero-icons assets/paquito-icon.webp",
+    "Pharsa": "hero-icons assets/pharsa-icon.webp",
+    "Phoveus": "hero-icons assets/phoveus-icon.webp",
+    "Popol and Kupa": "hero-icons assets/popol&kupa-icon.webp",
+    "Rafaela": "hero-icons assets/rafaela-icon.webp",
+    "Roger": "hero-icons assets/roger-icon.webp",
+    "Ruby": "hero-icons assets/ruby-icon.webp",
+    "Saber": "hero-icons assets/saber-icon.webp",
+    "Selena": "hero-icons assets/selena-icon.webp",
+    "Silvanna": "hero-icons assets/silvanna-icon.webp",
+    "Sora": "hero-icons assets/sora-icon.webp",
+    "Sun": "hero-icons assets/sun-icon.webp",
+    "Suyou": "hero-icons assets/suyou-icon.webp",
+    "Terizla": "hero-icons assets/terizla-icon.webp",
+    "Thamuz": "hero-icons assets/thamuz-icon.webp",
+    "Tigreal": "hero-icons assets/tigreal-icon.webp",
+    "Uranus": "hero-icons assets/uranus-icon.webp",
+    "Vale": "hero-icons assets/vale-icon.webp",
+    "Valentina": "hero-icons assets/valentina-icon.webp",
+    "Valir": "hero-icons assets/valir-icon.webp",
+    "Vexana": "hero-icons assets/vexana-icon.webp",
+    "Wanwan": "hero-icons assets/wanwan-icon.webp",
+    "X.Borg": "hero-icons assets/xborg-icon.webp",
+    "Xavier": "hero-icons assets/xavier-icon.webp",
+    "Yi Sun-shin": "hero-icons assets/yi-sun-shin-icon.webp",
+    "Yin": "hero-icons assets/yin-icon.webp",
+    "Yu Zhong": "hero-icons assets/yu-zhong-icon.webp",
+    "Yve": "hero-icons assets/yve-icon.webp",
+    "Zetian": "hero-icons assets/zetian-icon.webp",
+    "Zhask": "hero-icons assets/zhask-icon.webp",
+    "Zhuxin": "hero-icons assets/zhuxin-icon.webp",
+    "Zilong": "hero-icons assets/zilong-icon.webp"
+  };
 
   var FORMATS = {
     bo3: { games: 3, majority: 2, label: "Best of 3" },
@@ -541,9 +679,17 @@
   }
 
   function buildHeroAvatar(name, size){
-    var avatar = el("div", "hero-avatar", heroInitials(name));
+    var avatar = el("div", "hero-avatar");
+    avatar.appendChild(el("span", "avatar-initials", heroInitials(name)));
     avatar.style.background = ROLE_COLORS[heroPrimaryRole(name)] || ROLE_COLORS.Other;
     if(size){ avatar.style.width = size + "px"; avatar.style.height = size + "px"; avatar.style.fontSize = Math.round(size * 0.4) + "px"; }
+    if(HERO_IMAGES[name]){
+      var icon = document.createElement("img");
+      icon.src = HERO_IMAGES[name];
+      icon.alt = name;
+      icon.onerror = function(){ this.remove(); };
+      avatar.appendChild(icon);
+    }
     return avatar;
   }
 
@@ -609,7 +755,7 @@
 
     if(heroName){
       var avatar = buildHeroAvatar(heroName, 48);
-      avatar.className = "slot-tile-avatar";
+      avatar.className = "hero-avatar slot-tile-avatar";
       avatar.style.background = ROLE_COLORS[heroPrimaryRole(heroName)] || ROLE_COLORS.Other;
       slot.appendChild(avatar);
       slot.appendChild(el("div", "slot-hero", heroName));
@@ -1014,7 +1160,7 @@
     var searchInput = el("input");
     searchInput.type = "text";
     searchInput.className = "toolbar-search";
-    searchInput.placeholder = "Search champion...";
+    searchInput.placeholder = "Search Hero...";
     searchInput.value = state.heroSearch || "";
     searchWrap.appendChild(searchInput);
     var clearBtn = el("button", "toolbar-search-clear", "\u00D7");
