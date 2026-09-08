@@ -246,10 +246,10 @@
   .manual-actions{ display:flex; gap:10px; margin-top:14px; }
 
   .draft-grid{
-    display:grid; grid-template-columns: 108px 1fr 108px; gap:0;
+    display:grid; grid-template-columns: 320px minmax(0,1fr) 320px; gap:0;
     border:1px solid var(--line); background: var(--bg-panel);
   }
-  .roster{ padding: 14px 10px; border-right:1px solid var(--line); display:flex; flex-direction:column; gap:9px; }
+  .roster{ padding: 14px 10px; border-right:1px solid var(--line); display:flex; flex-direction:column; gap:8px; }
   .roster:last-child{ border-right:none; border-left:1px solid var(--line); }
   .roster h3{
     font-family:'Teko',sans-serif; font-size:14px; font-weight:600; margin:0 0 2px;
@@ -260,14 +260,15 @@
   .roster.b h3{ color: var(--crimson); }
   .slot{
     border:1px dashed var(--line); padding:6px; font-size:13px; color: var(--text-faint);
-    display:flex; flex-direction:column; align-items:center; gap:4px;
+    display:flex; flex-direction:column; align-items:center; gap:4px; min-width:0; min-height:0;
   }
   .slot.filled{ border-style:solid; background: var(--bg); }
   .roster.a .slot.filled{ border-color: var(--teal-dim); }
   .roster.b .slot.filled{ border-color: var(--crimson-dim); }
+  .slot.filled{ position:relative; width:100%; height:auto; min-height:0; padding:0; gap:2px; background:transparent; }
 
   .slot-player-input{
-    background:transparent; border:none; outline:none; padding:0;
+    display:none; background:transparent; border:none; outline:none; padding:0; margin:0;
     font-family:'Inter',sans-serif; font-size:9.5px; letter-spacing:0.04em; text-transform:uppercase;
     color: var(--text-faint); width:100%; text-align:center;
   }
@@ -279,12 +280,18 @@
   .slot-hero{ font-size:10px; color: var(--text); text-align:center; line-height:1.2; }
   .slot-hero.empty{ color: var(--text-faint); font-style:italic; }
 
-  .slot-tile-avatar{
-    width:48px; height:48px; border-radius:6px;
-    display:flex; align-items:center; justify-content:center;
-    font-family:'Teko',sans-serif; font-weight:600; font-size:18px;
-    color:#111a15; flex-shrink:0;
+  .slot-wallpaper{
+    width:min(300px, 100%); max-width:100%; height:80px; aspect-ratio:auto; position:relative; overflow:hidden; border-radius:4px;
+    background:var(--bg-panel-raised); display:flex; align-items:flex-end;
   }
+  .slot-wallpaper img.wallpaper-image{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; display:block; }
+  .slot-wallpaper::after{ content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,0.05) 25%, rgba(0,0,0,0.88) 100%); pointer-events:none; }
+  .slot-wallpaper.fallback::after{ display:none; }
+  .slot-wallpaper .hero-avatar{ position:absolute; inset:0; width:100%; height:100%; border-radius:inherit; }
+  .slot-wallpaper-caption{ position:absolute; left:0; right:0; bottom:0; z-index:2; width:100%; padding:8px 10px 7px; background:linear-gradient(transparent, rgba(0,0,0,0.85)); color:var(--text); font-size:11px; line-height:1.15; text-align:left; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .recent-heroes{ width:100%; display:flex; justify-content:flex-start; gap:5px; min-height:28px; padding:2px 2px 0; }
+  .recent-hero-icon{ width:26px; height:26px; border-radius:4px; object-fit:cover; display:block; border:1px solid var(--line); }
+  .slot-tile-avatar{ width:48px; height:48px; border-radius:6px; }
   .slot-tile-empty{
     width:48px; height:48px; border-radius:6px; border:1px dashed var(--line);
     background: var(--bg);
@@ -293,6 +300,34 @@
   .pool{ padding: 12px 14px; }
   .pool-head{ display:flex; align-items:center; justify-content:center; margin-bottom:10px; }
   .pool-count{ font-size:11.5px; color: var(--text-faint); letter-spacing:0.04em; }
+
+  .game-pick-history{
+    background:var(--bg-panel); border:1px solid var(--line); padding:10px 14px; margin-bottom:8px;
+  }
+  .game-history{
+    display:flex; flex-direction:row; gap:12px; align-items:flex-start;
+    overflow-x:auto; overflow-y:hidden; padding-bottom:3px;
+  }
+  .game-history-card{
+    flex:0 0 auto; width:178px; padding:8px 9px;
+    background:var(--bg); border:1px solid var(--line); border-radius:4px;
+  }
+  .game-pick-history-title{
+    font-family:'Teko',sans-serif; font-size:16px; color:var(--amber);
+    text-transform:uppercase; letter-spacing:0.04em; text-align:center; margin-bottom:7px;
+  }
+  .game-pick-history-section + .game-pick-history-section{ margin-top:8px; }
+  .game-pick-history-label{
+    color:var(--text-faint); font-size:9px; letter-spacing:0.1em;
+    text-transform:uppercase; margin-bottom:3px;
+  }
+  .game-pick-history-row{
+    display:flex; flex-wrap:wrap; gap:5px; min-width:0; overflow:hidden;
+  }
+  .game-history-card .game-pick-history-section + .game-pick-history-section{ margin-top:10px; }
+  .game-history-icon{ display:block; object-fit:cover; flex:0 0 auto; border:1px solid var(--line); }
+  .current-game-hero{ width:64px; height:64px; border-radius:6px; }
+  .previous-game-hero{ width:28px; height:28px; border-radius:4px; opacity:0.82; }
 
   .filter-row{ }
   .filter-row-label{
@@ -315,7 +350,7 @@
   .hero-scroll{
     max-height: 460px; overflow-y:auto; padding-right:4px;
   }
-  .hero-scroll::-webkit-scrollbar{ width:6px; }
+  .hero-scroll::-webkit-scrollbar{ width:10px; }
   .hero-scroll::-webkit-scrollbar-thumb{ background: var(--line); }
 
   .hero-empty{ font-size:13px; color: var(--text-faint); padding: 10px 2px; text-align:center; }
@@ -374,6 +409,7 @@
     color: var(--text-dim); text-transform:uppercase; letter-spacing:0.03em;
   }
   .chip-row{ display:flex; flex-wrap:wrap; gap:6px; }
+  .locked-hero-icon{ width:32px; height:32px; border:1px solid var(--line-soft); border-radius:4px; object-fit:cover; display:block; }
   .chip{
     font-size:11.5px; padding:4px 9px; border:1px solid var(--line-soft); color: var(--text-faint);
   }
@@ -393,8 +429,8 @@
     .scoreboard{ grid-template-columns: 1fr; text-align:center; }
     .team-block.right{ align-items:center; text-align:center; }
     .draft-grid{ grid-template-columns: 1fr; }
-    .roster{ border-right:none !important; border-left:none !important; border-bottom:1px solid var(--line); flex-direction:row; flex-wrap:wrap; justify-content:center; }
-    .roster h3{ flex-basis:100%; }
+    .roster{ border-right:none !important; border-left:none !important; border-bottom:1px solid var(--line); flex-direction:column; align-items:center; justify-content:flex-start; }
+    .roster h3{ flex-basis:auto; }
     .field-row{ grid-template-columns: 1fr; }
 
     .draft-toolbar{ grid-template-columns: 1fr; gap:10px; text-align:center; }
@@ -428,7 +464,7 @@
     "Zhask","Zhuxin","Zilong"
   ];
 
-  var HERO_IMAGES = {
+  var HERO_ICONS = {
     "Aamon": "hero-icons assets/aamon-icon.webp",
     "Akai": "hero-icons assets/akai-icon.webp",
     "Aldous": "hero-icons assets/aldous-icon.webp",
@@ -564,6 +600,170 @@
     "Zilong": "hero-icons assets/zilong-icon.webp"
   };
 
+  var HERO_WALLPAPERS = {
+    "Aamon": "hero-wallpaper assets/aamon-wp.webp",
+    "Akai": "hero-wallpaper assets/akai-wp.webp",
+    "Aldous": "hero-wallpaper assets/aldous-wp.webp",
+    "Alice": "hero-wallpaper assets/alice-wp.webp",
+    "Alpha": "hero-wallpaper assets/alpha-wp.webp",
+    "Alucard": "hero-wallpaper assets/alucard-wp.webp",
+    "Angela": "hero-wallpaper assets/angela-wp.webp",
+    "Argus": "hero-wallpaper assets/argus-wp.webp",
+    "Arlott": "hero-wallpaper assets/arlott-wp.webp",
+    "Atlas": "hero-wallpaper assets/atlas-wp.webp",
+    "Aulus": "hero-wallpaper assets/aulus-wp.webp",
+    "Aurora": "hero-wallpaper assets/aurora-wp.webp",
+    "Badang": "hero-wallpaper assets/badang-wp.webp",
+    "Balmond": "hero-wallpaper assets/balmond-wp.webp",
+    "Bane": "hero-wallpaper assets/bane-wp.webp",
+    "Barats": "hero-wallpaper assets/barats-wp.webp",
+    "Baxia": "hero-wallpaper assets/baxia-wp.webp",
+    "Beatrix": "hero-wallpaper assets/beatrix-wp.webp",
+    "Belerick": "hero-wallpaper assets/belerick-wp.webp",
+    "Benedetta": "hero-wallpaper assets/benedetta-wp.webp",
+    "Brody": "hero-wallpaper assets/brody-wp.webp",
+    "Bruno": "hero-wallpaper assets/bruno-wp.webp",
+    "Carmilla": "hero-wallpaper assets/carmilla-wp.webp",
+    "Cecilion": "hero-wallpaper assets/cecillion-wp.webp",
+    "Chang'e": "hero-wallpaper assets/chang'e-wp.webp",
+    "Chip": "hero-wallpaper assets/chip-wp.webp",
+    "Chou": "hero-wallpaper assets/chou-wp.webp",
+    "Cici": "hero-wallpaper assets/cici-wp.webp",
+    "Claude": "hero-wallpaper assets/claude-wp.webp",
+    "Clint": "hero-wallpaper assets/clint-wp.webp",
+    "Cyclops": "hero-wallpaper assets/cyclops-wp.webp",
+    "Diggie": "hero-wallpaper assets/diggie-wp.webp",
+    "Dyrroth": "hero-wallpaper assets/dyrroth-wp.webp",
+    "Edith": "hero-wallpaper assets/edith-wp.webp",
+    "Esmeralda": "hero-wallpaper assets/esmeralda-wp.webp",
+    "Estes": "hero-wallpaper assets/estes-wp.webp",
+    "Eudora": "hero-wallpaper assets/eudora-wp.webp",
+    "Fanny": "hero-wallpaper assets/fanny-wp.webp",
+    "Faramis": "hero-wallpaper assets/faramis-wp.webp",
+    "Floryn": "hero-wallpaper assets/floryn-wp.webp",
+    "Franco": "hero-wallpaper assets/franco-wp.webp",
+    "Fredrinn": "hero-wallpaper assets/fredrinn-wp.webp",
+    "Freya": "hero-wallpaper assets/freya-wp.webp",
+    "Gatotkaca": "hero-wallpaper assets/gatotkaca-wp.webp",
+    "Gloo": "hero-wallpaper assets/gloo-wp.webp",
+    "Gord": "hero-wallpaper assets/gord-wp.webp",
+    "Granger": "hero-wallpaper assets/granger-wp.webp",
+    "Grock": "hero-wallpaper assets/grock-wp.webp",
+    "Guinevere": "hero-wallpaper assets/guinevere-wp.webp",
+    "Gusion": "hero-wallpaper assets/gusion-wp.webp",
+    "Hanabi": "hero-wallpaper assets/hanabi-wp.webp",
+    "Hanzo": "hero-wallpaper assets/hanzo-wp.webp",
+    "Harith": "hero-wallpaper assets/harith-wp.webp",
+    "Harley": "hero-wallpaper assets/harley-wp.webp",
+    "Hayabusa": "hero-wallpaper assets/hayabusa-wp.webp",
+    "Helcurt": "hero-wallpaper assets/helcurt-wp.webp",
+    "Hilda": "hero-wallpaper assets/hilda-wp.webp",
+    "Hirara": "hero-wallpaper assets/hirara-wp.webp",
+    "Hylos": "hero-wallpaper assets/hylos-wp.webp",
+    "Irithel": "hero-wallpaper assets/irithel-wp.webp",
+    "Ixia": "hero-wallpaper assets/ixia-wp.webp",
+    "Jawhead": "hero-wallpaper assets/jawhead-wp.webp",
+    "Johnson": "hero-wallpaper assets/johnson-wp.webp",
+    "Joy": "hero-wallpaper assets/joy-wp.webp",
+    "Julian": "hero-wallpaper assets/julian-wp.webp",
+    "Kadita": "hero-wallpaper assets/kadita-wp.webp",
+    "Kagura": "hero-wallpaper assets/kagura-wp.webp",
+    "Kaja": "hero-wallpaper assets/kaja-wp.webp",
+    "Kalea": "hero-wallpaper assets/kalea-wp.webp",
+    "Karina": "hero-wallpaper assets/karina-wp.webp",
+    "Karrie": "hero-wallpaper assets/karrie-wp.webp",
+    "Khaleed": "hero-wallpaper assets/khaleed-wp.webp",
+    "Khufra": "hero-wallpaper assets/khufra-wp.webp",
+    "Kimmy": "hero-wallpaper assets/kimmy-wp.webp",
+    "Lancelot": "hero-wallpaper assets/lancelot-wp.webp",
+    "Lapu-Lapu": "hero-wallpaper assets/lapu-lapu-wp.webp",
+    "Layla": "hero-wallpaper assets/layla-wp.webp",
+    "Leomord": "hero-wallpaper assets/leomord-wp.webp",
+    "Lesley": "hero-wallpaper assets/lesley-wp.webp",
+    "Ling": "hero-wallpaper assets/ling-wp.webp",
+    "Lolita": "hero-wallpaper assets/lolita-wp.webp",
+    "Lukas": "hero-wallpaper assets/lukas-wp.webp",
+    "Lunox": "hero-wallpaper assets/lunox-wp.webp",
+    "Luo Yi": "hero-wallpaper assets/lou-yi-wp.webp",
+    "Lylia": "hero-wallpaper assets/lylia-wp.webp",
+    "Marcel": "hero-wallpaper assets/marcel-wp.webp",
+    "Martis": "hero-wallpaper assets/martis-wp.webp",
+    "Masha": "hero-wallpaper assets/masha-wp.webp",
+    "Mathilda": "hero-wallpaper assets/mathilda-wp.webp",
+    "Melissa": "hero-wallpaper assets/melissa-wp.webp",
+    "Minotaur": "hero-wallpaper assets/minotaur-wp.webp",
+    "Minsitthar": "hero-wallpaper assets/minsitthar-wp.webp",
+    "Miya": "hero-wallpaper assets/miya-wp.webp",
+    "Moskov": "hero-wallpaper assets/moscov-wp.webp",
+    "Nana": "hero-wallpaper assets/nana-wp.webp",
+    "Natalia": "hero-wallpaper assets/natalia-wp.webp",
+    "Natan": "hero-wallpaper assets/natan-wp.webp",
+    "Nolan": "hero-wallpaper assets/nolan-wp.webp",
+    "Novaria": "hero-wallpaper assets/novaria-wp.webp",
+    "Obsidia": "hero-wallpaper assets/obsidia-wp.webp",
+    "Odette": "hero-wallpaper assets/odette-wp.webp",
+    "Paquito": "hero-wallpaper assets/paquito-wp.webp",
+    "Pharsa": "hero-wallpaper assets/pharsa-wp.webp",
+    "Phoveus": "hero-wallpaper assets/phoveus-wp.webp",
+    "Popol and Kupa": "hero-wallpaper assets/popol&kupa-wp.webp",
+    "Rafaela": "hero-wallpaper assets/rafaela-wp.webp",
+    "Roger": "hero-wallpaper assets/roger-wp.webp",
+    "Ruby": "hero-wallpaper assets/ruby-wp.webp",
+    "Saber": "hero-wallpaper assets/saber-wp.webp",
+    "Selena": "hero-wallpaper assets/selena-wp.webp",
+    "Silvanna": "hero-wallpaper assets/silvanna-wp.webp",
+    "Sora": "hero-wallpaper assets/sora-wp.webp",
+    "Sun": "hero-wallpaper assets/sun-wp.webp",
+    "Suyou": "hero-wallpaper assets/suyou-wp.webp",
+    "Terizla": "hero-wallpaper assets/terizla-wp.webp",
+    "Thamuz": "hero-wallpaper assets/thamuz-wp.webp",
+    "Tigreal": "hero-wallpaper assets/tigreal-wp.webp",
+    "Uranus": "hero-wallpaper assets/uranus-wp.webp",
+    "Vale": "hero-wallpaper assets/vale-wp.webp",
+    "Valentina": "hero-wallpaper assets/valentina-wp.webp",
+    "Valir": "hero-wallpaper assets/valir-wp.webp",
+    "Vexana": "hero-wallpaper assets/vexana-wp.webp",
+    "Wanwan": "hero-wallpaper assets/wanwan-wp.webp",
+    "X.Borg": "hero-wallpaper assets/xborg-wp.webp",
+    "Xavier": "hero-wallpaper assets/xavier-wp.webp",
+    "Yi Sun-shin": "hero-wallpaper assets/yi-sun-shin-wp.webp",
+    "Yin": "hero-wallpaper assets/yin-wp.webp",
+    "Yu Zhong": "hero-wallpaper assets/yu-zhong-wp.webp",
+    "Yve": "hero-wallpaper assets/yve-wp.webp",
+    "Zetian": "hero-wallpaper assets/zetian-wp.webp",
+    "Zhask": "hero-wallpaper assets/zhask-wp.webp",
+    "Zhuxin": "hero-wallpaper assets/zhuxin-wp.webp",
+    "Zilong": "hero-wallpaper assets/zilong-wp.webp"
+  };
+
+  var HERO_WALLPAPER_POSITION = {};
+  DEFAULT_HEROES.forEach(function(name){
+    HERO_WALLPAPER_POSITION[name] = "center 32%";
+  });
+  var HERO_WALLPAPER_POSITION_OVERRIDES = {
+    "Aamon": "center 35%",
+    "Akai": "center 40%",
+    "Barats": "center 35%",
+    "Beatrix": "center 30%",
+    "Benedetta": "center 30%",
+    "Carmilla": "center 28%",
+    "Chang'e": "center 30%",
+    "Fanny": "center 28%",
+    "Gusion": "center 30%",
+    "Hanabi": "center 30%",
+    "Harley": "center 28%",
+    "Hayabusa": "center 30%",
+    "Lancelot": "center 30%",
+    "Luo Yi": "center 30%",
+    "Selena": "center 30%",
+    "Wanwan": "center 28%",
+    "Xavier": "center 30%",
+    "Yi Sun-shin": "center 35%"
+  };
+  Object.keys(HERO_WALLPAPER_POSITION_OVERRIDES).forEach(function(name){
+    HERO_WALLPAPER_POSITION[name] = HERO_WALLPAPER_POSITION_OVERRIDES[name];
+  });
+
   var FORMATS = {
     bo3: { games: 3, majority: 2, label: "Best of 3" },
     bo5: { games: 5, majority: 3, label: "Best of 5" },
@@ -683,9 +883,9 @@
     avatar.appendChild(el("span", "avatar-initials", heroInitials(name)));
     avatar.style.background = ROLE_COLORS[heroPrimaryRole(name)] || ROLE_COLORS.Other;
     if(size){ avatar.style.width = size + "px"; avatar.style.height = size + "px"; avatar.style.fontSize = Math.round(size * 0.4) + "px"; }
-    if(HERO_IMAGES[name]){
+    if(HERO_ICONS[name]){
       var icon = document.createElement("img");
-      icon.src = HERO_IMAGES[name];
+      icon.src = HERO_ICONS[name];
       icon.alt = name;
       icon.onerror = function(){ this.remove(); };
       avatar.appendChild(icon);
@@ -705,9 +905,12 @@
       teamB: "Red Team",
       playersA: ["", "", "", "", ""],
       playersB: ["", "", "", "", ""],
+      recentHeroesA: [[], [], [], [], []],
+      recentHeroesB: [[], [], [], [], []],
       pool: DEFAULT_HEROES.slice(),
       unavailable: {},             // heroName -> true (persists across games, cleared on ultimate)
       games: [],                   // {n, picksA:[], picksB:[], winner:null, ultimate:bool}
+      gameHistory: [],             // completed game pick snapshots for the visual history
       currentGame: null,
       score: { a: 0, b: 0 },
       turn: "a",
@@ -750,15 +953,84 @@
     return val || ((side === "a" ? "Blue " : "Red ") + "Player " + (i + 1));
   }
 
+  function recordRecentHero(side, playerIndex, heroName){
+    var histories = side === "a" ? state.recentHeroesA : state.recentHeroesB;
+    var history = histories[playerIndex] || [];
+    histories[playerIndex] = [heroName].concat(history.filter(function(name){ return name !== heroName; })).slice(0, 5);
+  }
+
+  function heroWallpaperPath(name){
+    return HERO_WALLPAPERS[name] || null;
+  }
+
+  function buildGameHistoryIcon(name, className){
+    if(!HERO_ICONS[name]) return null;
+    var icon = document.createElement("img");
+    icon.className = "game-history-icon " + className;
+    icon.src = HERO_ICONS[name];
+    icon.alt = name;
+    icon.title = name;
+    icon.onerror = function(){ this.remove(); };
+    return icon;
+  }
+
+  function buildGameHistoryRow(label, names, iconClass){
+    var section = el("div", "game-pick-history-section");
+    section.appendChild(el("div", "game-pick-history-label", label));
+    var row = el("div", "game-pick-history-row");
+    (names || []).forEach(function(name){
+      var icon = buildGameHistoryIcon(name, iconClass);
+      if(icon) row.appendChild(icon);
+    });
+    section.appendChild(row);
+    return section;
+  }
+
+  function buildGamePickHistory(game){
+    var wrap = el("div", "game-pick-history");
+    wrap.appendChild(el("div", "game-pick-history-title", "Game " + game.n + " — Current game"));
+    wrap.appendChild(buildGameHistoryRow("Blue", game.picksA, "current-game-hero"));
+    wrap.appendChild(buildGameHistoryRow("Red", game.picksB, "current-game-hero"));
+
+    if(state.gameHistory.length){
+      wrap.appendChild(el("div", "game-pick-history-title", "Previous games"));
+      var history = el("div", "game-history");
+      state.gameHistory.forEach(function(previous){
+        var card = el("div", "game-history-card");
+        card.appendChild(el("div", "game-pick-history-label", "Game " + previous.game));
+        card.appendChild(buildGameHistoryRow("Blue", previous.blue, "previous-game-hero"));
+        card.appendChild(buildGameHistoryRow("Red", previous.red, "previous-game-hero"));
+        history.appendChild(card);
+      });
+      wrap.appendChild(history);
+    }
+    return wrap;
+  }
+
   function buildRosterSlot(side, i, heroName){
     var slot = el("div", "slot" + (heroName ? " filled" : ""));
 
     if(heroName){
-      var avatar = buildHeroAvatar(heroName, 48);
-      avatar.className = "hero-avatar slot-tile-avatar";
-      avatar.style.background = ROLE_COLORS[heroPrimaryRole(heroName)] || ROLE_COLORS.Other;
-      slot.appendChild(avatar);
-      slot.appendChild(el("div", "slot-hero", heroName));
+      var wallpaper = el("div", "slot-wallpaper");
+      var wallpaperPath = heroWallpaperPath(heroName);
+      if(wallpaperPath){
+        var wallpaperImage = document.createElement("img");
+        wallpaperImage.className = "wallpaper-image";
+        wallpaperImage.src = wallpaperPath;
+        wallpaperImage.alt = heroName;
+        wallpaperImage.style.objectPosition = HERO_WALLPAPER_POSITION[heroName] || "center center";
+        wallpaperImage.onerror = function(){
+          this.remove();
+          wallpaper.classList.add("fallback");
+          wallpaper.appendChild(buildHeroAvatar(heroName));
+        };
+        wallpaper.appendChild(wallpaperImage);
+      } else {
+        wallpaper.classList.add("fallback");
+        wallpaper.appendChild(buildHeroAvatar(heroName));
+      }
+      wallpaper.appendChild(el("div", "slot-wallpaper-caption", playerName(side, i) + " — " + heroName));
+      slot.appendChild(wallpaper);
     } else {
       slot.appendChild(el("div", "slot-tile-empty"));
       slot.appendChild(el("div", "slot-hero empty", "\u2014"));
@@ -793,11 +1065,27 @@
 
   function beginGame(n){
     var ultimate = isUltimateGame(n);
-    state.currentGame = { n: n, picksA: [], picksB: [], winner: null, ultimate: ultimate };
+    state.currentGame = { n: n, picksA: [], picksB: [], winner: null, ultimate: ultimate, historyRecorded: false };
     state.turn = ultimate ? "a" : buildTurnOrder(state.picksPerTeam)[0];
     state.phase = "drafting";
     state.manualPanelOpen = false;
     state.manualError = null;
+  }
+
+  function checkGameComplete(){
+    var g = state.currentGame;
+    if(!g || g.historyRecorded) return false;
+    var blueComplete = g.picksA.length === state.picksPerTeam && g.picksA.every(function(name){ return !!name; });
+    var redComplete = g.picksB.length === state.picksPerTeam && g.picksB.every(function(name){ return !!name; });
+    if(!blueComplete || !redComplete) return false;
+
+    state.gameHistory.push({
+      game: g.n,
+      blue: g.picksA.slice(),
+      red: g.picksB.slice()
+    });
+    g.historyRecorded = true;
+    return true;
   }
 
   function heroUnavailable(name){
@@ -809,12 +1097,18 @@
     var g = state.currentGame;
     if(!g) return;
     var perTeam = state.picksPerTeam;
+    var selectedSide;
+    var selectedPlayerIndex;
 
     if(g.ultimate){
       // Blind pick: fill whichever side still needs heroes, alternate for UI clarity
       if(g.picksA.length <= g.picksB.length && g.picksA.length < perTeam){
+        selectedSide = "a";
+        selectedPlayerIndex = g.picksA.length;
         g.picksA.push(name);
       } else if(g.picksB.length < perTeam){
+        selectedSide = "b";
+        selectedPlayerIndex = g.picksB.length;
         g.picksB.push(name);
       }
     } else {
@@ -824,8 +1118,12 @@
       if(picksSoFar >= perTeam*2) return;
       var side = order[picksSoFar];
       if(side === "a"){
+        selectedSide = "a";
+        selectedPlayerIndex = g.picksA.length;
         g.picksA.push(name);
       } else {
+        selectedSide = "b";
+        selectedPlayerIndex = g.picksB.length;
         g.picksB.push(name);
       }
       state.unavailable[name] = true;
@@ -833,6 +1131,9 @@
       state.turn = picksSoFar < perTeam*2 ? order[picksSoFar] : null;
     }
 
+    if(selectedSide) recordRecentHero(selectedSide, selectedPlayerIndex, name);
+
+    checkGameComplete();
     if(g.picksA.length >= perTeam && g.picksB.length >= perTeam){
       state.phase = "result";
     }
@@ -906,6 +1207,9 @@
 
     g.picksA = resolvedA;
     g.picksB = resolvedB;
+    resolvedA.forEach(function(name, index){ recordRecentHero("a", index, name); });
+    resolvedB.forEach(function(name, index){ recordRecentHero("b", index, name); });
+    checkGameComplete();
     if(!g.ultimate){
       combined.forEach(function(name){ state.unavailable[name] = true; });
     }
@@ -1235,6 +1539,8 @@
       container.appendChild(banner);
     }
 
+    container.appendChild(buildGamePickHistory(g));
+
     var grid = el("div", "draft-grid");
 
     var rosterA = el("div", "roster a");
@@ -1384,7 +1690,17 @@
       wrap.appendChild(el("div", "", "None yet."));
     } else {
       var row = el("div", "chip-row");
-      names.forEach(function(n){ row.appendChild(el("div", "chip", n)); });
+      names.forEach(function(n){
+        if(!HERO_ICONS[n]) return;
+        var icon = document.createElement("img");
+        icon.className = "locked-hero-icon";
+        icon.src = HERO_ICONS[n];
+        icon.alt = n;
+        icon.title = n;
+        icon.setAttribute("aria-label", n);
+        icon.onerror = function(){ this.remove(); };
+        row.appendChild(icon);
+      });
       wrap.appendChild(row);
     }
     return wrap;
